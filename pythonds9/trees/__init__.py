@@ -1,5 +1,5 @@
 """"""
-from .balance import AVLTree
+from .avltree import AVLTree
 from .bst import BinarySearchTree
-from .binheap import BinHeap
+from .binaryheap import BinHeap
 from .binarytree import BinaryTree

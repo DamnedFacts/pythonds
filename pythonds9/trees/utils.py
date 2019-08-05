@@ -12,7 +12,10 @@ def viz_tree(r):
     while True:
         if current_node:
             stack.push((_id, current_node))
-            g.node(f'node{_id}', f'<f0>|<f1> {current_node.get_root_val()} (#{_id})|<f2> ')
+            node_val = current_node.get_root_val()
+            if isinstance(node_val, str) and node_val in ["|", "<", ">", "\"", "'"]:
+                node_val = node_val.replace(node_val, "\\" + node_val)
+            g.node(f'node{_id}', f'<f0>|<f1> {node_val} (#{_id})|<f2> ')
             if _id >= 1:
                 g.edge('node{0}:f{1}'.format(current_root_num, 0 if leftward else 2),
                        'node{0}:f1'.format(_id))
@@ -30,6 +33,6 @@ def viz_tree(r):
                 leftward = False
             
         if current_node is None and stack.is_empty():
-            break      
+            break
 
     return g

@@ -5,6 +5,7 @@ class Graph:
     def __init__(self):
         self.vertices = {}
         self.time = 0
+        self.num_vertices = 1
 
     def __iter__(self):
         return iter(self.vertices.values())
@@ -13,9 +14,11 @@ class Graph:
         return n in self.vertices
 
     def add_vertex(self, key):
-        new_vertex = Vertex(key)
-        self.vertices[key] = new_vertex
-        return new_vertex
+        # What to do if this key already exists here?
+        if key not in self.vertices:
+            new_vertex = Vertex(key)
+            self.vertices[key] = new_vertex
+            self.num_vertices += 1
 
     def get_vertex(self, n):
         if n in self.vertices:
@@ -33,38 +36,6 @@ class Graph:
 
     def get_vertices(self):
         return self.vertices.keys()
-
-    def graph(self, show_pred=False, show_arrows=False):
-        from graphviz import Digraph
-        
-        gv = Digraph(graph_attr={'start': '2',
-                                 'layout': 'neato',
-                                 'overlap': 'scale',
-                                 'splines': 'true'},
-                     node_attr={'shape': 'circle',
-                                'height': '.1'},
-                     edge_attr={})
-
-        if show_pred:
-            for w in self.vertices.values():
-                w_id = w.get_id()
-                gv.node('node{0}'.format(w_id), '{0}'.format(w_id))
-                if w.get_pred() and w.get_pred().get_id():
-                    gv.attr('edge', dir="forward")
-                    gv.edge('node{0}'.format(w_id),
-                            'node{0}'.format(w.get_pred().get_id()))
-        else:
-            for v in self.vertices:
-                v_id = self.vertices[v].get_id()
-                gv.node('node{0}'.format(v_id), '{0}'.format(v_id))
-                for w in self.vertices[v].connected_to.keys():
-                    w_id = w.get_id()
-                    gv.node('node{0}'.format(w_id), '{0}'.format(w_id))
-                    if not show_arrows:
-                        gv.attr('edge',  dir="none")
-                    gv.edge('node{0}'.format(v_id),
-                            'node{0}'.format(w_id))
-        return gv
 
     def dfs(self):
         self.reset()
