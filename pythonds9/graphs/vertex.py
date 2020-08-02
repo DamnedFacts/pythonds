@@ -14,6 +14,12 @@ class Vertex:
         self.disc = 0
         self.fin = 0
 
+    def __str__(self):
+        return f"{self.id} connected to: {[x.id for x in self.connected_to]}"
+
+    def __repr__(self):
+        return f"Vertex({self.id})"
+
     def add_neighbor(self, nbr, weight=0):
         """Add neighbor vertex."""
         self.connected_to[nbr] = weight
@@ -54,10 +60,6 @@ class Vertex:
 
     def get_weight(self, nbr):
         return self.connected_to[nbr]
-
-    def __str__(self):
-        return (str(self.id) + " connected to: " +
-                str([x.id for x in self.connected_to]))
 
     def get_id(self):
         return self.id
